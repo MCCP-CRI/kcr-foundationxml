@@ -4,6 +4,8 @@
 
 **Output:** [CSV File](src/main/resources/KCR999999_flatvariants.csv) with variant and identifier information:
 
+(The data below is completely fabricated and not based on any actual patient data.)
+
 | variantType   | geneName1 | geneName2 | position1                  | position2                 | cdsEffect     | proteinEffect | transcript | functionalEffect | copyNumber | numberOfExons | ratio | copyNumberAlterationType | description   | alleleFraction | msi | tmb          | pmiSubmittedDiagnosis  | pmiSpecSite | pmiCollDate | fmId      | cliaNumber | signature                                                                              | baitSet |
 |---------------|-----------|-----------|----------------------------|---------------------------|---------------|---------------|------------|------------------|------------|---------------|-------|--------------------------|---------------|----------------|-----|--------------|------------------------|-------------|-------------|-----------|------------|----------------------------------------------------------------------------------------|---------|
 | shortVariant  | PIK3CA    |           | chr4:918936091             |                           | 1099G>A       | E545K         | NM_008818  | missense         |            |               |       |                          |               | 0.5995         | MSS | intermediate | Breast carcinoma (NOS) | Breast      | 10/18/19    | KCR999999 | 00D9099111 | Ada Love, M.D..(2019-02-19 10:30:00) | K9      |
