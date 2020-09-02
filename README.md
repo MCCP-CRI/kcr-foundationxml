@@ -1,4 +1,4 @@
-# **Java Library for Parsing Foundation Medicine XML Variant Reports and Converting to CSV** #
+# **Java Application for Parsing Foundation Medicine XML Variant Reports and Converting to CSV** #
 
 **Input:** Foundation Medicine XML file, contact your representative from [Foundation Medicine, Inc.](https://www.foundationmedicine.com/) to obtain XML files.
 
