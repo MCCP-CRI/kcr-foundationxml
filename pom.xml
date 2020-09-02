@@ -6,7 +6,7 @@
 
 	<groupId>edu.uky.kcr</groupId>
 	<artifactId>kcr-foundationxml</artifactId>
-	<version>1.1</version>
+	<version>1.1.1</version>
 
 	<properties>
 		<maven.compiler.source>11</maven.compiler.source>
