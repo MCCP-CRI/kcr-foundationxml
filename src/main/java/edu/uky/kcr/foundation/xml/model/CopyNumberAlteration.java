@@ -55,7 +55,7 @@ public class CopyNumberAlteration
 	private String position = null;
 	
 	@XStreamAsAttribute
-	private Double ratio = null;
+	private String ratio = null;
 	
 	@XStreamAsAttribute
 	private String status = null;
@@ -114,7 +114,7 @@ public class CopyNumberAlteration
 		return position;
 	}
 
-	public Double getRatio()
+	public String getRatio()
 	{
 		return ratio;
 	}

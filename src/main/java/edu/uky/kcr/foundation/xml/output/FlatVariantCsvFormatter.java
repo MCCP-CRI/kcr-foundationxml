@@ -58,7 +58,6 @@ public class FlatVariantCsvFormatter
 		implements FoundationFormatter
 {
 	private static final DateFormat DEFAULT_DATE_FORMATTER = new SimpleDateFormat(ResultsReportUtils.DEFAULT_DATE_FORMAT);
-	private static final DateFormat DEFAULT_DATE_TIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static final String SHORT_VARIANT_TYPE = "shortVariant";
 	public static final String REARRANGEMENT_TYPE = "rearrangement";
@@ -76,6 +75,7 @@ public class FlatVariantCsvFormatter
 			"cdsEffect",
 			"proteinEffect",
 			"transcript",
+			"strand",
 			"functionalEffect",
 			"copyNumber",
 			"numberOfExons",
@@ -185,23 +185,28 @@ public class FlatVariantCsvFormatter
 		return outputCsvFile;
 	}
 
-	public void toFile(File outputFile)
+	public File toFile(File outputFile)
 			throws IOException
 	{
+		File actualOutputFile = null;
+
 		if (outputFile == null)
 		{
-			toDefaultFile();
+			actualOutputFile = toDefaultFile();
 		}
 		else if (outputFile.isDirectory())
 		{
-			toDirectory(outputFile);
+			actualOutputFile = toDirectory(outputFile);
 		}
 		else
 		{
-			toCsvFile(outputFile);
+			actualOutputFile = toCsvFile(outputFile);
 		}
+
+		return actualOutputFile;
 	}
-	private  void toCsvFile(File outputFile)
+
+	private File toCsvFile(File outputFile)
 			throws IOException
 	{
 		boolean append = outputFile.exists();
@@ -219,9 +224,11 @@ public class FlatVariantCsvFormatter
 			String msi = resultsReport.getVariantReport().getBiomarkers().getMicrosatelliteInstability().getStatus();
 			String pmiSubmittedDiagnosis = resultsReport.getFinalReport().getPmi().getPmiSubmittedDiagnosis();
 			String pmiSpecSite = resultsReport.getFinalReport().getPmi().getPmiSpecSite();
-			String pmiCollDate = DEFAULT_DATE_FORMATTER.format(resultsReport.getFinalReport().getPmi().getPmiCollDate());
+			String pmiCollDate = DEFAULT_DATE_FORMATTER.format(resultsReport.getFinalReport().getPmi()
+																	   .getPmiCollDate());
 			String fmId = resultsReport.getFinalReport().getSample().getSampleFmId();
-			String cliaNumber = getDistinctCliaNumbers(resultsReport.getFinalReport().getSample().getProcessSites().getList());
+			String cliaNumber = getDistinctCliaNumbers(resultsReport.getFinalReport().getSample().getProcessSites()
+															   .getList());
 			String signature = getSignatures(resultsReport.getFinalReport().getSignatures().getList());
 			String baitSet = getDistinctBaitSets(resultsReport.getVariantReport().getSamples().getList());
 
@@ -237,13 +244,15 @@ public class FlatVariantCsvFormatter
 				recordValues.add(shortVariant.getCdsEffect()); //"cdsEffect",
 				recordValues.add(shortVariant.getProteinEffect()); //"proteinEffect",
 				recordValues.add(shortVariant.getTranscript()); //"transcript",
+				recordValues.add(shortVariant.getStrand()); //"strand",
 				recordValues.add(shortVariant.getFunctionalEffect()); //"functionalEffect",
 				recordValues.add(StringUtils.EMPTY); //"copyNumber",
 				recordValues.add(StringUtils.EMPTY); //"numberOfExons",
 				recordValues.add(StringUtils.EMPTY); //"ratio",
 				recordValues.add(StringUtils.EMPTY); //"copyNumberAlterationType",
 				recordValues.add(StringUtils.EMPTY); //"description",
-				recordValues.add(Objects.toString(shortVariant.getAlleleFraction(), StringUtils.EMPTY)); //"alleleFraction",
+				recordValues.add(Objects.toString(shortVariant
+														  .getAlleleFraction(), StringUtils.EMPTY)); //"alleleFraction",
 				recordValues.add(msi); //"msi",
 				recordValues.add(tmb); //"tmb",
 				recordValues.add(pmiSubmittedDiagnosis); //"pmiSubmittedDiagnosis",
@@ -270,6 +279,7 @@ public class FlatVariantCsvFormatter
 				recordValues.add(StringUtils.EMPTY); //"cdsEffect",
 				recordValues.add(StringUtils.EMPTY); //"proteinEffect",
 				recordValues.add(StringUtils.EMPTY); //"transcript",
+				recordValues.add(StringUtils.EMPTY); //"strand",
 				recordValues.add(StringUtils.EMPTY); //"functionalEffect",
 				recordValues.add(StringUtils.EMPTY); //"copyNumber",
 				recordValues.add(StringUtils.EMPTY); //"numberOfExons",
@@ -291,7 +301,8 @@ public class FlatVariantCsvFormatter
 				csvPrinter.flush();
 			}
 
-			for (CopyNumberAlteration copyNumberAlteration : resultsReport.getVariantReport().getCopyNumberAlterations().getList())
+			for (CopyNumberAlteration copyNumberAlteration : resultsReport.getVariantReport().getCopyNumberAlterations()
+					.getList())
 			{
 				List<String> recordValues = new ArrayList<>();
 
@@ -303,6 +314,7 @@ public class FlatVariantCsvFormatter
 				recordValues.add(StringUtils.EMPTY); //"cdsEffect",
 				recordValues.add(StringUtils.EMPTY); //"proteinEffect",
 				recordValues.add(StringUtils.EMPTY); //"transcript",
+				recordValues.add(StringUtils.EMPTY); //"strand",
 				recordValues.add(StringUtils.EMPTY); //"functionalEffect",
 				recordValues.add(copyNumberAlteration.getCopyNumber().toString()); //"copyNumber",
 				recordValues.add(copyNumberAlteration.getNumberOfExons()); //"numberOfExons",
@@ -326,6 +338,8 @@ public class FlatVariantCsvFormatter
 
 			csvPrinter.close();
 		}
+
+		return outputFile;
 	}
 
 	private String getDistinctCliaNumbers(List<ProcessSite> processSites)
@@ -365,7 +379,7 @@ public class FlatVariantCsvFormatter
 		for (Signature signature : signatures)
 		{
 			signatureList.add(
-					String.format("%s (%s)", signature.getSignatureText(), DEFAULT_DATE_TIME_FORMATTER.format(signature.getSignatureServerTime())));
+					String.format("%s (%s)", signature.getSignatureText(), signature.getSignatureServerTime()));
 		}
 
 		return StringUtils.join(signatureList.toArray(new String[]{}), " | ");

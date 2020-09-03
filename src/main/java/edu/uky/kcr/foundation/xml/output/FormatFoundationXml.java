@@ -33,19 +33,21 @@ package edu.uky.kcr.foundation.xml.output;
 import edu.uky.kcr.cli.CliParser;
 import edu.uky.kcr.cli.CliUtils;
 import edu.uky.kcr.cli.DefaultCliAdapter;
-import org.apache.commons.cli.Option;
+import edu.uky.kcr.foundation.xml.ResultsReportFactory;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.logging.Logger;
 
 public class FormatFoundationXml
 		extends DefaultCliAdapter
 {
 	private static final String OPT_INPUT = "i";
 	private static final String OPT_OUTPUT = "o";
+	private static Logger logger = Logger.getLogger(FormatFoundationXml.class.getName());
 
 	public static void main(String[] args)
 			throws IOException
@@ -66,17 +68,39 @@ public class FormatFoundationXml
 
 				if (input.isDirectory())
 				{
+					logger.info(String.format("Searching input directory for Foundation XML files: %s", input
+							.getAbsolutePath()));
+
 					Collection<File> inputFiles = FileUtils.listFiles(input,
-																	  new String[]{"xml"}, false);
+																	  new String[]{"xml"}, true);
 
 					for (File xmlInputFile : inputFiles)
 					{
-						FoundationFormatter.fromInputXml(xmlInputFile).toFile(output);
+						if (ResultsReportFactory.isFoundationXmlReport(xmlInputFile))
+						{
+							logger.info(String.format("Processing Input Foundation XML file: %s", xmlInputFile.getAbsolutePath()));
+
+							File actualOutputFile = FoundationFormatter.fromInputXml(xmlInputFile).toFile(output);
+
+							logger.info(String.format("Output file is : %s", actualOutputFile.getAbsolutePath()));
+						}
 					}
 				}
 				else
 				{
-					FoundationFormatter.fromInputXml(input).toFile(output);
+					if (ResultsReportFactory.isFoundationXmlReport(input))
+					{
+						logger.info(String.format("Processing Input Foundation XML file: %s", input.getAbsolutePath()));
+
+						File actualOutputFile = FoundationFormatter.fromInputXml(input).toFile(output);
+
+						logger.info(String.format("Output file is : %s", actualOutputFile.getAbsolutePath()));
+					}
+					else
+					{
+						logger.info(String.format("ERROR: Input file did not look like Foundation XML: %s", input
+								.getAbsolutePath()));
+					}
 				}
 			}
 			catch (ParseException parseException)
@@ -96,12 +120,13 @@ public class FormatFoundationXml
 		{
 			case OPT_INPUT:
 			{
-				File inputFile = CliUtils.convertParsedValue(File.class, cliParser.getParsedValue(OPT_INPUT));
+				String inputFileString = cliParser.getParsedValue(OPT_INPUT);
+
+				File inputFile = CliUtils.convertParsedValue(File.class, inputFileString);
 
 				if (inputFile == null || inputFile.exists() == false)
 				{
-					throw new ParseException(String.format("Input file or directory not found: %s", cliParser
-							.getParsedValue(OPT_INPUT)));
+					throw new ParseException(String.format("Input file or directory not found: %s", inputFileString));
 				}
 
 				break;

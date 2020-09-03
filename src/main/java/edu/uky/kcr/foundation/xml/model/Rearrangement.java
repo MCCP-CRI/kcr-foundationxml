@@ -70,7 +70,7 @@ public class Rearrangement
 	
 	@XStreamAsAttribute
 	@XStreamAlias("allele-fraction")
-	private Double alleleFraction = null;
+	private String alleleFraction = null;
 	
 	@XStreamAsAttribute
 	@XStreamAlias("supporting-read-pairs")
@@ -78,7 +78,7 @@ public class Rearrangement
 	
 	@XStreamAsAttribute
 	@XStreamAlias("percent-reads")
-	private Double percentReads = null;
+	private String percentReads = null;
 	
 	@XStreamAsAttribute
 	@XStreamAlias("status")
@@ -149,7 +149,7 @@ public class Rearrangement
 		return description;
 	}
 
-	public Double getAlleleFraction()
+	public String getAlleleFraction()
 	{
 		return alleleFraction;
 	}
@@ -159,7 +159,7 @@ public class Rearrangement
 		return supportingReadPairs;
 	}
 
-	public Double getPercentReads()
+	public String getPercentReads()
 	{
 		return percentReads;
 	}
