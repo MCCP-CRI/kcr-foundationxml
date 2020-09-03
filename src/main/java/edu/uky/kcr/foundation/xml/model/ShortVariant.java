@@ -46,7 +46,7 @@ public class ShortVariant
 
 	@XStreamAsAttribute
 	@XStreamAlias("allele-fraction")
-	private Double alleleFraction = null;
+	private String alleleFraction = null;
 
 	@XStreamAsAttribute
 	private Integer depth = null;
@@ -60,7 +60,7 @@ public class ShortVariant
 
 	@XStreamAlias("percent-reads")
 	@XStreamAsAttribute
-	private Double percentReads = null;
+	private String percentReads = null;
 
 	@XStreamAsAttribute
 	private String position = null;
@@ -116,7 +116,7 @@ public class ShortVariant
 		return cdsEffect;
 	}
 
-	public Double getAlleleFraction()
+	public String getAlleleFraction()
 	{
 		return alleleFraction;
 	}
@@ -136,7 +136,7 @@ public class ShortVariant
 		return equivocal;
 	}
 
-	public Double getPercentReads()
+	public String getPercentReads()
 	{
 		return percentReads;
 	}

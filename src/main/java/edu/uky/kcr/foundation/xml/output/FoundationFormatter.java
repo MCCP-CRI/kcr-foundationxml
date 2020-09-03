@@ -56,7 +56,7 @@ public interface FoundationFormatter
 		return foundationFormatter;
 	}
 
-	public void toFile(File outputFile)
+	public File toFile(File outputFile)
 			throws IOException;
 
 	public File toDefaultFile()

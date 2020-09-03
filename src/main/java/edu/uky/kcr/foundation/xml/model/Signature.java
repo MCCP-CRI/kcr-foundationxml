@@ -38,7 +38,7 @@ import java.util.Date;
 public class Signature
 {
 	@XStreamAlias("ServerTime")
-	private Date signatureServerTime = null;
+	private String signatureServerTime = null;
 	
 	@XStreamAlias("OpName")
 	private String signatureOpName = null;
@@ -46,7 +46,7 @@ public class Signature
 	@XStreamAlias("Text")
 	private String signatureText = null;
 
-	public Date getSignatureServerTime()
+	public String getSignatureServerTime()
 	{
 		return signatureServerTime;
 	}
